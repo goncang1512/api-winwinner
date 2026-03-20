@@ -1,8 +1,6 @@
 import { Controller, Get, Res } from '@nestjs/common';
 import type { Response } from 'express';
 import { generateQuiz } from '../lib/generate-question.js';
-import { CurrentUser } from '../utils/decorators/current-user.decorator.js';
-import { TypeGetSession } from '../types.js';
 
 @Controller()
 export class AppController {
@@ -18,7 +16,7 @@ export class AppController {
   }
 
   @Get('question')
-  async getQuestion(@CurrentUser() user: TypeGetSession, @Res() res: Response) {
+  async getQuestion(@Res() res: Response) {
     try {
       const question = await generateQuiz();
 

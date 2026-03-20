@@ -26,6 +26,11 @@ export class AuthGuardCustom implements CanActivate {
       context.getClass(),
     ]);
 
+    const requiredRoles = this.reflector.getAllAndOverride<string[]>('roles', [
+      context.getHandler(),
+      context.getClass(),
+    ]);
+
     // ✅ PUBLIC → langsung lolos
     if (isPublic) return true;
 
@@ -99,6 +104,14 @@ export class AuthGuardCustom implements CanActivate {
     }
 
     request.user = session.user as TypeGetSession;
+
+    if (requiredRoles && requiredRoles.length > 0) {
+      const user = request.user;
+
+      if (!user || !requiredRoles.includes(user.role as string)) {
+        throw new UnauthorizedException(`Access denied (${user.role})`);
+      }
+    }
 
     return true;
   }
