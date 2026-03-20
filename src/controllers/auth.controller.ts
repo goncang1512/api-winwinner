@@ -11,12 +11,14 @@ import { AuthService } from '../services/auth.service.js';
 import type { Response } from 'express';
 import { CurrentUser } from '../utils/decorators/current-user.decorator.js';
 import { TypeGetSession } from '../types.js';
+import { AllowAnonymous } from '../utils/metadata/authentication_meta.js';
 
 @Controller('auth')
 export class AuthController {
   constructor(private auth: AuthService) {}
 
   @Post('signup')
+  @AllowAnonymous()
   async signup(
     @Body() body: { username: string; email: string; password: string },
     @Res() res: Response,
@@ -36,6 +38,7 @@ export class AuthController {
   }
 
   @Post('login')
+  @AllowAnonymous()
   async login(
     @Body() body: { email: string; password: string },
     @Res() res: Response,
@@ -50,7 +53,6 @@ export class AuthController {
         result,
       });
     } catch (error) {
-      console.log('Error in here');
       return res.status(500).json({
         status: false,
         status_code: 500,

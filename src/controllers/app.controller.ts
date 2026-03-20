@@ -19,15 +19,6 @@ export class AppController {
 
   @Get('question')
   async getQuestion(@CurrentUser() user: TypeGetSession, @Res() res: Response) {
-    if (!user) {
-      return res.status(403).json({
-        status: false,
-        status_code: 403,
-        message: 'Unauthorization',
-        result: null,
-      });
-    }
-
     try {
       const question = await generateQuiz();
 
