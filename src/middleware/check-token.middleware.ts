@@ -7,6 +7,7 @@ import {
 import { Reflector } from '@nestjs/core';
 import { PrismaService } from '../services/prisma.service.js';
 import { SelectGetSession, TypeGetSession } from '../types.js';
+import { Role } from '../utils/metadata/authentication_meta.js';
 
 @Injectable()
 export class AuthGuardCustom implements CanActivate {
@@ -26,7 +27,7 @@ export class AuthGuardCustom implements CanActivate {
       context.getClass(),
     ]);
 
-    const requiredRoles = this.reflector.getAllAndOverride<string[]>('roles', [
+    const requiredRoles = this.reflector.getAllAndOverride<Role[]>('roles', [
       context.getHandler(),
       context.getClass(),
     ]);
@@ -108,7 +109,7 @@ export class AuthGuardCustom implements CanActivate {
     if (requiredRoles && requiredRoles.length > 0) {
       const user = request.user;
 
-      if (!user || !requiredRoles.includes(user.role as string)) {
+      if (!user || !requiredRoles.includes(user.role as Role)) {
         throw new UnauthorizedException(`Access denied (${user.role})`);
       }
     }
