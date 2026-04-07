@@ -54,10 +54,10 @@ Output hanya JSON valid tanpa penjelasan.
 
     // Mapping difficulty ke point rupiah
     const difficultyPoint: Record<string, number> = {
-      easy: 1000,
-      medium: 10000,
-      hard: 14000,
-      very_hard: 20000,
+      easy: 1000000,
+      medium: 10000000,
+      hard: 14000000,
+      very_hard: 20000000,
     };
 
     // eslint-disable-next-line @typescript-eslint/no-unsafe-return
